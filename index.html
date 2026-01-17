@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>𝗧𝗵𝗲 𝗷𝘂𝗯𝗶𝗹𝗲𝗲 𝗮𝘀𝗽𝗲𝗰𝘁</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HOME -->
+<section id="home" class="screen active">
+  <h1>𝗧𝗛𝗘 𝗝𝗨𝗕𝗜𝗟𝗘𝗘 𝗔𝗦𝗣𝗘𝗖𝗧</h1>
+        <h2>( crew portal )</h2>
+  <div class="buttons">
+    <button class="btn hire" onclick="show('login')">HIRE</button>
+    <button class="btn join" onclick="show('join')">JOIN</button>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section id="login" class="screen">
+  <div class="card">
+    <h2>Director Login</h2>
+    <input id="username" placeholder="Username">
+    <input id="password" type="password" placeholder="Password">
+    <button class="btn login" onclick="login()">LOGIN</button>
+    <p id="error"></p>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join" class="screen">
+  <div class="card">
+    <h2>Join Crew</h2>
+    <input id="name" placeholder="Full Name">
+    <input id="phone" placeholder="Phone Number">
+    <input id="email" type="email" placeholder="Email">
+    <select id="gender">
+      <option value="">Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+      <option>Other</option>
+    </select>
+    <input id="role" placeholder="Role">
+    <input id="exp" placeholder="Experience">
+    <input id="city" placeholder="City">
+    <button class="btn join" onclick="joinCrew()">SUBMIT</button>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="screen">
+  <h2>Joined Crew</h2>
+  <div id="crewList" class="grid"></div>
+  <button class="btn back" onclick="show('home')">LOGOUT</button>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
