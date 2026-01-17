@@ -1,6 +1,31 @@
+/**************** FIREBASE ****************/
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+/* 🔹 YOUR FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyBnosp4iHaCh-W2tSyF2697G5xvIviJqkg",
+  authDomain: "the-jubilee-aspect.firebaseapp.com",
+  projectId: "the-jubilee-aspect",
+  storageBucket: "the-jubilee-aspect.firebasestorage.app",
+  messagingSenderId: "191518733883",
+  appId: "1:191518733883:web:05e207bedf31f1586ece1e",
+  measurementId: "G-LJG52MXYQD"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+/**************** UI REFERENCES ****************/
 const screens = document.querySelectorAll('.screen');
 
-/* SAFE INPUT REFERENCES */
 const iName   = document.getElementById('name');
 const iPhone  = document.getElementById('phone');
 const iEmail  = document.getElementById('email');
@@ -13,42 +38,40 @@ const iUser  = document.getElementById('username');
 const iPass  = document.getElementById('password');
 const iError = document.getElementById('error');
 
+/**************** UI LOGIC ****************/
 function show(id){
   screens.forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if(id === 'dashboard') loadCrew();
+  if(id === "dashboard") loadCrew();
 }
 
 function login(){
-  if(iUser.value === "jathin" && iPass.value === "949812"){
+  if(iUser.value==="jathin" && iPass.value==="949812"){
     iUser.value = "";
     iPass.value = "";
     iError.innerText = "";
-    show('dashboard');
-  }else{
+    show("dashboard");
+  } else {
     iError.innerText = "Invalid credentials";
     iPass.value = "";
   }
 }
 
-function joinCrew(){
-  const crew = {
-    name:   iName.value,
-    phone:  iPhone.value,
-    email:  iEmail.value,
+/**************** FIRESTORE LOGIC ****************/
+async function joinCrew(){
+  await addDoc(collection(db,"crew"),{
+    name: iName.value,
+    phone: iPhone.value,
+    email: iEmail.value,
     gender: iGender.value,
-    role:   iRole.value,
-    exp:    iExp.value,
-    city:   iCity.value
-  };
-
-  let list = JSON.parse(localStorage.getItem('crew')) || [];
-  list.push(crew);
-  localStorage.setItem('crew', JSON.stringify(list));
+    role: iRole.value,
+    exp: iExp.value,
+    city: iCity.value,
+    time: Date.now()
+  });
 
   alert("OUR team will talk to you");
 
-  /* CLEAR FORM */
   iName.value = "";
   iPhone.value = "";
   iEmail.value = "";
@@ -57,18 +80,18 @@ function joinCrew(){
   iExp.value = "";
   iCity.value = "";
 
-  show('home');
+  show("home");
 }
 
-function loadCrew(){
-  const box = document.getElementById('crewList');
+async function loadCrew(){
+  const box = document.getElementById("crewList");
   box.innerHTML = "";
 
-  let list = JSON.parse(localStorage.getItem('crew')) || [];
-
-  list.forEach((c, i) => {
-    const div = document.createElement('div');
-    div.className = 'crew';
+  const querySnapshot = await getDocs(collection(db,"crew"));
+  querySnapshot.forEach(docSnap => {
+    const c = docSnap.data();
+    const div = document.createElement("div");
+    div.className = "crew";
     div.innerHTML = `
       <p><b>Name:</b> ${c.name}</p>
       <p><b>Phone:</b> ${c.phone}</p>
@@ -77,17 +100,15 @@ function loadCrew(){
       <p><b>Role:</b> ${c.role}</p>
       <p><b>Experience:</b> ${c.exp}</p>
       <p><b>City:</b> ${c.city}</p>
-      <button class="delete" onclick="removeCrew(${i})">DELETE</button>
+      <button class="delete" onclick="removeCrew('${docSnap.id}')">DELETE</button>
     `;
     box.appendChild(div);
   });
 }
 
-function removeCrew(index){
+async function removeCrew(id){
   if(confirm("Remove this crew member?")){
-    let list = JSON.parse(localStorage.getItem('crew')) || [];
-    list.splice(index, 1);
-    localStorage.setItem('crew', JSON.stringify(list));
+    await deleteDoc(doc(db,"crew",id));
     loadCrew();
   }
-}
+                                        }
