@@ -112,3 +112,8 @@ async function removeCrew(id){
     loadCrew();
   }
                                         }
+// Make functions global so buttons can call them
+window.show = show;
+window.login = login;
+window.joinCrew = joinCrew;
+window.removeCrew = removeCrew;
