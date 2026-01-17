@@ -9,7 +9,7 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* 🔹 YOUR FIREBASE CONFIG */
+/* 🔹 FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyBnosp4iHaCh-W2tSyF2697G5xvIviJqkg",
   authDomain: "the-jubilee-aspect.firebaseapp.com",
@@ -111,8 +111,9 @@ async function removeCrew(id){
     await deleteDoc(doc(db,"crew",id));
     loadCrew();
   }
-                                        }
-// Make functions global so buttons can call them
+}
+
+/**************** MAKE FUNCTIONS GLOBAL FOR BUTTONS ****************/
 window.show = show;
 window.login = login;
 window.joinCrew = joinCrew;
